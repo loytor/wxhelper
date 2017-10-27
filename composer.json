@@ -1,0 +1,16 @@
+{
+    "name": "loytor/wxhelper",
+    "description": "weixinhelper:auth pay webpublish",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.0.0",
+        "guzzlehttp/guzzle": "^6.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Loytor\\Wxhelper\\": "./src"
+        }
+    }
+}

@@ -1,10 +1,10 @@
 <?php
 
-namespace Loytor\Wxhelper\Wechat;
+namespace Loytor\Wxhelper\Notify;
 
 use Loytor\Wxhelper\Exception\WechatException;
 
-class WechatMessage
+class WechatNotify
 {
     //加密、解密使用
     private $_block_size = 32;

@@ -7,8 +7,6 @@ abstract class AbstractComponent extends AbstractBase
     private $component_appid;
     private $component_access_token;
 
-    protected $request_url;
-
     public function __construct(string $component_appid, string $component_access_token)
     {
         $this->component_appid = $component_appid;
@@ -25,8 +23,8 @@ abstract class AbstractComponent extends AbstractBase
         return $this->component_access_token;
     }
 
-    public function getRequestUrl()
+    public function getRequestUrl($request_base)
     {
-        return $this->request_url . "?component_access_token={$this->getComponentAccessToken()}";
+        return $request_base . "?component_access_token={$this->getComponentAccessToken()}";
     }
 }

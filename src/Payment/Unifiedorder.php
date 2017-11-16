@@ -2,15 +2,16 @@
 
 namespace Loytor\Wxhelper\Payment;
 
-use Loytor\Wxhelper\AbstractPayment;
+use Loytor\Wxhelper\Utils\Http;
+use Loytor\Wxhelper\Utils\Utils;
 use Loytor\Wxhelper\Exception\WechatException;
 
-class Unifiedorder extends AbstractPayment
+class Unifiedorder
 {
     /**
      * https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1.
      */
-    const REQUEST_BASE = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
+    const URL_UNIFIEDORDER = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
 
     /**
      * 商户 KEY.
@@ -51,18 +52,13 @@ class Unifiedorder extends AbstractPayment
     /**
      * 获取响应结果.
      */
-    public function execute()
+    public function getRespond()
     {
         $options = $this->getElements();
-        ksort($options);
-        $options['sign'] = strtoupper(md5(urldecode(http_build_query($options)) . '&key=' . $this->key));
+        $options['sign'] = Utils::createPaymentSign($options, $this->key);
 
-        $result = $this->_postXmlData(self::REQUEST_BASE, $options);
+        $result = Http::request('POST', self::URL_UNIFIEDORDER)->withXmlBody($options)->send();
         return $result;
-    }
-
-    public function getPaySignParams(){
-
     }
 
     public function set(string $name, $value)

@@ -38,7 +38,11 @@ class Http
 
     public function withQuery(array $query)
     {
-        $this->query = array_merge($this->query, $query);
+        if ($this->query) {
+            $this->query = array_merge($this->query, $query);
+        } else {
+            $this->query = $query;
+        }
         return $this;
     }
 
@@ -78,7 +82,7 @@ class Http
     {
         $this->query ? $options['query'] = $this->query : true;
         $this->body ? $options['body'] = $this->body : true;
-        $this->ssl_cert ? $options = array_merge($options, ['cert' => $this->ssl_cert, 'ssl_key' => $this->ssl_key]) : true;
+        $this->ssl_cert ? $options = array_merge($options ?? [], ['cert' => $this->ssl_cert, 'ssl_key' => $this->ssl_key]) : true;
         $this->debug ? $options['debug'] = true : true;
         $this->headers ? $options['headers'] = $this->headers : true;
 

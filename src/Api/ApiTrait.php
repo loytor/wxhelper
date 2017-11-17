@@ -20,7 +20,7 @@ trait ApiTrait
         $this->appid = $appid;
     }
 
-    public static function initialize($access_token, $appid)
+    public static function instance($access_token, $appid)
     {
         return new static($access_token, $appid);
     }

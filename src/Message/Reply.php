@@ -10,17 +10,15 @@ class Reply
 {
     use Elements;
     protected $entity;
-    protected $authorizer_appid;
 
-    public function __construct(Entity $entity, $authorizer_appid)
+    public function __construct(Entity $entity)
     {
         $this->entity = $entity;
-        $this->authorizer_appid = $authorizer_appid;
     }
 
-    public static function instance(Entity $entity, string $authorizer_appid)
+    public static function instance(Entity $entity)
     {
-        return new static($entity, $authorizer_appid);
+        return new static($entity);
     }
 
     private function respond()
@@ -31,8 +29,20 @@ class Reply
         if (!$xml_no_header) {
             throw new WechatException('xml 格式错误, XML:' . $xml, 70000);
         }
-        return Utils::EncryptMsg($xml_no_header, $this->authorizer_appid, $this->entity->component_key, 32);
+
+        if ($this->entity->getEncryptType() == 'aes') {
+            $encrypted = Utils::EncryptMsg($xml_no_header, $this->entity->component_appid, $this->entity->component_key, 32);
+            $timeStamp = time();
+            $nonce = Utils::getRandomStr();
+            //签名
+            $signature = Utils::signature($encrypted, $this->entity->component_token, $timeStamp, $nonce);
+            $msg_xml_string = Utils::buildEncryptXml($encrypted, $signature, $timeStamp, $nonce);
+            return $msg_xml_string;
+        }
+
+        return $xml_no_header;
     }
+
 
     private function init(string $msg_type)
     {

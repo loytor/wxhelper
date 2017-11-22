@@ -11,8 +11,10 @@ class Entity implements EntityInterface
 {
     public $request;
     public $component_appid, $component_key, $component_token;#初始化的参数
-    public $msg_data, $msg_str;#消息体,数组 和 string.xml
-    public $post_data, $post_str;#原始的消息体
+    protected $msg_data, $msg_str;#消息体,数组 和 string.xml
+    protected $post_data, $post_str;#原始的消息体
+    protected $encrypt_type, $msg_signature;
+    protected $nonce, $timestamp, $signature;
 
     public function __construct(array $options)
     {
@@ -90,6 +92,36 @@ class Entity implements EntityInterface
         #把需要用到的参数全部塞进全局变量中
         $this->msg_data = $msg_data;
         $this->msg_str = $msg_str;
+        $this->nonce = $nonce;
+        $this->timestamp = $timestamp;
+        $this->signature = $signature;
+        $this->encrypt_type = $encrypt_type;
+        $this->msg_signature = $msg_signature;
+    }
+
+    public function getNonce()
+    {
+        return $this->nonce;
+    }
+
+    public function getTimestamp()
+    {
+        return $this->timestamp;
+    }
+
+    public function getSignature()
+    {
+        return $this->signature;
+    }
+
+    public function getEncryptType()
+    {
+        return $this->encrypt_type;
+    }
+
+    public function getMsgSignature()
+    {
+        return $this->msg_signature;
     }
 
     public function getRequest()

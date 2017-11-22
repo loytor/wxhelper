@@ -1,11 +1,24 @@
 <?php
 
-namespace Loytor\Wxhelper\Utils;
+namespace Loytor\Wxhelper\Api;
 
-trait ErrorMsg
+abstract class ApiAbstract
 {
+    protected $access_token;
+    protected $appid;
     protected $last_error_code;
     protected $last_error_msg;
+
+    public function __construct($access_token, $appid)
+    {
+        $this->access_token = $access_token;
+        $this->appid = $appid;
+    }
+
+    public static function instance($access_token, $appid)
+    {
+        return new static($access_token, $appid);
+    }
 
     public function setErrorMsg($resp)
     {

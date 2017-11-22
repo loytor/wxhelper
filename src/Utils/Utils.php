@@ -149,4 +149,10 @@ class Utils
         $str = implode($array);
         return sha1($str);
     }
+
+    public static function buildEncryptXml($encrypt, $signature, $timestamp, $nonce)
+    {
+        $format = '<xml><Encrypt><![CDATA[%s]]></Encrypt><MsgSignature><![CDATA[%s]]></MsgSignature><TimeStamp>%s</TimeStamp><Nonce><![CDATA[%s]]></Nonce></xml>';
+        return sprintf($format, $encrypt, $signature, $timestamp, $nonce);
+    }
 }

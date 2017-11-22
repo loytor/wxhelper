@@ -20,7 +20,7 @@ class Utils
      * @param string $type =jsapi/wxcard
      * @return array
      */
-    public function getTicketSignature($url, $ticket, $type = 'jsapi')
+    public static function getTicketSignature($authorizer_appid, $url, $ticket, $type = 'jsapi')
     {
         #去掉#号部分
         $url = explode('#', $url);
@@ -33,7 +33,7 @@ class Utils
         $string = "jsapi_ticket=$ticket&noncestr=$nonceStr&timestamp=$timestamp&url=$url";
         $signature = sha1($string);
         $signPackage = array(
-            'appId' => $this->authorizer_appid,
+            'appId' => $authorizer_appid,
             'nonceStr' => $nonceStr,
             'timestamp' => $timestamp,
             'signature' => $signature,
@@ -49,12 +49,12 @@ class Utils
      * @param string $block_size
      * @return bool|string
      */
-    public function EncryptMsg($reply_msg, $appid, $encodingAesKey, $block_size)
+    public static function EncryptMsg($reply_msg, $appid, $encodingAesKey, $block_size)
     {
         try {
             $key = base64_decode($encodingAesKey . "=");
             //获得16位随机字符串，填充到明文之前
-            $random = $this->getRandomStr();
+            $random = static::getRandomStr();
             $text = $random . pack("N", strlen($reply_msg)) . $reply_msg . $appid;
             $iv = substr($key, 0, 16);
 
@@ -88,7 +88,7 @@ class Utils
      * @param string $block_size
      * @return bool|array('appid','msg')
      */
-    public function DecryptMsg($encrypt_msg, $encodingAesKey, $block_size)
+    public static function DecryptMsg($encrypt_msg, $encodingAesKey, $block_size)
     {
         try {
             $key = base64_decode($encodingAesKey . "=");
@@ -126,7 +126,7 @@ class Utils
     /*
      * 构造指定长度的随机字符串
      */
-    public function getRandomStr($size = 16)
+    public static function getRandomStr($size = 16)
     {
         $str = '';
         $str_pol = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
@@ -135,5 +135,18 @@ class Utils
             $str .= $str_pol[mt_rand(0, $max)];
         }
         return $str;
+    }
+
+    /**
+     * 签名(参数可变)
+     * @return bool|string
+     */
+    public static function signature()
+    {
+        //排序
+        $array = func_get_args();
+        sort($array, SORT_STRING);
+        $str = implode($array);
+        return sha1($str);
     }
 }

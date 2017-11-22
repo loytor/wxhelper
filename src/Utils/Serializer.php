@@ -4,13 +4,30 @@ namespace Loytor\Wxhelper\Utils;
 
 class Serializer
 {
-    public static function array2Xml($arr)
+    static function array2Xml($arr, $dom = 0, $item = 0, $cdata = 0)
     {
-        $xml = "<xml>";
-        foreach ($arr as $key => $val) {
-            $xml .= "<" . $key . ">" . $val . "</" . $key . ">";
+        if (!$dom) {
+            $dom = new \DOMDocument("1.0");
         }
-        $xml .= "</xml>";
+        if (!$item) {
+            $item = $dom->createElement("xml");
+            $dom->appendChild($item);
+        }
+        foreach ($arr as $key => $val) {
+            $itemx = $dom->createElement(is_string($key) ? $key : "item");
+            $item->appendChild($itemx);
+            if (!is_array($val)) {
+                if ($cdata && !is_numeric($val)) {
+                    $text = $dom->createCDATASection($val);
+                } else {
+                    $text = $dom->createTextNode($val);
+                }
+                $itemx->appendChild($text);
+            } else {
+                static::array2Xml($val, $dom, $itemx, $cdata);
+            }
+        }
+        $xml = $dom->saveXML();
         return $xml;
     }
 

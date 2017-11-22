@@ -27,3 +27,5 @@
         $userdata = Component::instance($component_access_token, $component_appid)->getWxappOpenidSessionKey($appid, $js_code);
         $openid = $userdata['openid'] ?? '';
         $session_key = $userdata['session_key'] ?? '';
+
+*2017-11-22 文档完善中.....*

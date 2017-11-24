@@ -9,6 +9,7 @@ class Http
     protected $method;
     protected $uri;
     protected $body;
+    protected $json;
     protected $query;
     protected $debug;
     protected $headers;
@@ -29,11 +30,13 @@ class Http
     public function withDebug(bool $boolen = false)
     {
         $this->debug = $boolen;
+        return $this;
     }
 
     public function withHeader(string $key, string $value)
     {
         $this->headers[$key] = $value;
+        return $this;
     }
 
     public function withQuery(array $query)
@@ -49,6 +52,12 @@ class Http
     public function withBody(array $body)
     {
         $this->body = Serializer::array2Json($body);
+        return $this;
+    }
+
+    public function withJson(array $body)
+    {
+        $this->json = $body;
         return $this;
     }
 
@@ -80,13 +89,8 @@ class Http
 
     public function send()
     {
-        $this->query ? $options['query'] = $this->query : true;
-        $this->body ? $options['body'] = $this->body : true;
-        $this->ssl_cert ? $options = array_merge($options ?? [], ['cert' => $this->ssl_cert, 'ssl_key' => $this->ssl_key]) : true;
-        $this->debug ? $options['debug'] = true : true;
-        $this->headers ? $options['headers'] = $this->headers : true;
-
-        $response = (new Client())->request($this->method, $this->uri, $options ?? []);
+        $options = $this->getOptions();
+        $response = (new Client())->request($this->method, $this->uri, $options ?: []);
         $content_type = $response->getHeaderLine('content-type');
         $contents = $response->getBody()->getContents();
         if (preg_match('/^image/', $content_type)) {#如果是个图片，直接返回图片，否则转成数组
@@ -94,5 +98,16 @@ class Http
         }
 
         return Serializer::parse($contents);
+    }
+
+    public function getOptions()
+    {
+        $this->query ? $options['query'] = $this->query : true;
+        $this->body ? $options['body'] = $this->body : true;
+        $this->json ? $options['json'] = $this->json : true;
+        $this->ssl_cert ? $options = array_merge($options ?? [], ['cert' => $this->ssl_cert, 'ssl_key' => $this->ssl_key]) : true;
+        $this->debug ? $options['debug'] = true : true;
+        $this->headers ? $options['headers'] = $this->headers : true;
+        return $options;
     }
 }

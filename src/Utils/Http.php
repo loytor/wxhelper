@@ -108,6 +108,6 @@ class Http
         $this->ssl_cert ? $options = array_merge($options ?? [], ['cert' => $this->ssl_cert, 'ssl_key' => $this->ssl_key]) : true;
         $this->debug ? $options['debug'] = true : true;
         $this->headers ? $options['headers'] = $this->headers : true;
-        return $options;
+        return $options ?? [];
     }
 }

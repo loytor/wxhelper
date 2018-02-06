@@ -55,7 +55,7 @@ class Http
         return $this;
     }
 
-    public function withJson(array $body)
+    public function withJson(string $body)
     {
         $this->json = $body;
         return $this;

@@ -51,7 +51,7 @@ class Http
 
     public function withBody(array $body)
     {
-        $this->body = Serializer::array2Json($body);
+        $this->body = Serializer::array2Json($body, JSON_UNESCAPED_UNICODE);
         return $this;
     }
 
@@ -64,6 +64,11 @@ class Http
     public function withXmlBody(array $body)
     {
         $this->body = Serializer::array2Xml($body);
+        return $this;
+    }
+
+    public function withEmptyJson(){
+        $this->body = '{}';
         return $this;
     }
 

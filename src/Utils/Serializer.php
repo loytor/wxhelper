@@ -43,8 +43,11 @@ class Serializer
         return json_decode($json, true);
     }
 
-    public static function array2Json($arr)
+    public static function array2Json($arr, $options = 0)
     {
+        if ($options !== 0) {
+            return json_encode($arr, $options);
+        }
         return json_encode($arr);
     }
 

@@ -208,4 +208,9 @@ class Entity implements EntityInterface
         return $this->getMsgData()['ToUserName'] ?? '';
     }
 
+    public function getSessionFrom()
+    {
+        return $this->getMsgData()['SessionFrom'] ?? '';
+    }
+
 }

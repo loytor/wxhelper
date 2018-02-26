@@ -98,7 +98,10 @@ class Http
         $response = (new Client())->request($this->method, $this->uri, $options ?: []);
         $content_type = $response->getHeaderLine('content-type');
         $contents = $response->getBody()->getContents();
-        if (preg_match('/^image/', $content_type)) {#如果是个图片，直接返回图片，否则转成数组
+        if (preg_match('/^image/', $content_type)) {#如果是个图片，直接返回图片
+            return $contents;
+        }
+        if (preg_match('/^text\/html/', $content_type)) {#如果是个文章
             return $contents;
         }
 

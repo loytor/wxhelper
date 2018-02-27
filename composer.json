@@ -7,7 +7,7 @@
     "require": {
         "php": ">=7.0.0",
         "guzzlehttp/guzzle": "^6.2",
-        "symfony/http-foundation": "~3.3"
+        "symfony/http-foundation": "v3.3.9"
     },
     "autoload": {
         "psr-4": {

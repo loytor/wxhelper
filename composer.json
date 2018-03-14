@@ -6,8 +6,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.0.0",
-        "guzzlehttp/guzzle": "^6.2",
-        "loytor/wxhelper": "dev-master"
+        "guzzlehttp/guzzle": "master"
     },
     "autoload": {
         "psr-4": {

@@ -6,7 +6,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.0.0",
-        "guzzlehttp/guzzle": "master"
+        "guzzlehttp/guzzle": "dev-master"
     },
     "autoload": {
         "psr-4": {

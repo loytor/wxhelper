@@ -55,7 +55,7 @@ class Http
         return $this;
     }
 
-    public function withJson(array $body)
+    public function withJson(string $body)
     {
         $this->json = $body;
         return $this;
@@ -102,6 +102,9 @@ class Http
             return $contents;
         }
         if (preg_match('/^text\/html/', $content_type)) {#如果是个文章
+            return $contents;
+        }
+        if (preg_match('/^application\/javascript/', $content_type)) {#如果是个文章
             return $contents;
         }
 

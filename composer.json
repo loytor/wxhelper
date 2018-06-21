@@ -3,7 +3,7 @@
     "description": "weixinhelper:auth pay webpublish",
     "type": "library",
     "license": "MIT",
-    "minimum-stability": "dev",
+    "minimum-stability": "dev-master",
     "require": {
         "guzzlehttp/guzzle": "6.2.2"
     },

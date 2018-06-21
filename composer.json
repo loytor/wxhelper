@@ -5,7 +5,7 @@
     "license": "MIT",
     "minimum-stability": "dev",
     "require": {
-        "guzzlehttp/guzzle": "dev-master"
+        "guzzlehttp/guzzle": "6.2.2"
     },
     "autoload": {
         "psr-4": {
